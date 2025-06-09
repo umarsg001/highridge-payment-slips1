@@ -1,36 +1,32 @@
-# Highridge Construction Company – Payment Slips Generator
+# Highridge Construction Company - Worker Payment Slip Generator
 
-## 📌 Project Overview
-This project was developed for the **Module 1 Assignment** of the Highridge Construction Company. The goal is to automate the creation of weekly payment slips for 400 workers using Python, with a demonstration of data usage in R.
+## Overview
+This program generates weekly payment slips for 400 dynamically created workers using Python. It then demonstrates data access in R for integration and analysis.
 
-You are assuming the role of a software engineer contracted to develop a dynamic payment slip generator based on salary ranges and employee gender.
+## Files Included
+- `main.py`: Core Python script generating the payment slips.
+- `convert_python_data.R`: Sample R script to read and display Python output.
+- `payment_slips.json`: JSON file (to be generated) for use in R.
+- `README.md`: This file.
 
----
+## How It Works
+1. Python dynamically creates a list of 400 workers with random gender and salary.
+2. Based on salary and gender:
+   - Salary > $10,000 and < $20,000: Employee Level = A1
+   - Salary > $7,500 and < $30,000 AND gender = Female: Employee Level = A5-F
+3. Data is exported to a JSON or CSV file.
+4. R script reads the file and displays a sample.
 
-## ⚙️ Features
-- Dynamically generates data for **400 workers** (with name, gender, and salary).
-- Assigns **employee levels** based on conditional salary logic:
-  - Salary > $10,000 and < $20,000 → `A1`
-  - Salary > $7,500 and < $30,000 and gender = Female → `A5-F`
-- Implements **exception handling** to ensure the program doesn't crash on bad data.
-- Exports results into a **JSON file**.
-- Demonstrates how to access and process the data in **R**.
-
----
-
-## 🛠 Files Included
-| File Name              | Description                                  |
-|------------------------|----------------------------------------------|
-| `main.py`              | Main Python script that creates workers and assigns levels. |
-| `payment_slips.json`   | Output JSON file with all processed employee data. |
-| `convert_python_data.R`| R script to import and preview JSON data.    |
-| `README.md`            | This documentation.                          |
-
----
-
-## 🚀 How to Run the Project
-
-### ✅ Python Script
-Ensure you have Python 3 installed. Then run:
+## How to Run
+### Python
 ```bash
 python main.py
+```
+
+### R
+```r
+source("convert_python_data.R")
+```
+
+## Author
+[Your Name] - Submitted for Module 1 Assignment (Due June 10, 2025)
