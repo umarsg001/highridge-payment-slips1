@@ -1,0 +1,128 @@
+import json
+import random
+import zipfile
+import os
+
+# Create directory for submission
+submission_dir = "/mnt/data/Highridge_Submission"
+os.makedirs(submission_dir, exist_ok=True)
+
+# Step 1: Generate workers
+genders = ['Male', 'Female']
+workers = []
+for i in range(400):
+    worker = {
+        'id': f'W{i+1:03d}',
+        'name': f'Worker_{i+1}',
+        'gender': random.choice(genders),
+        'salary': random.randint(5000, 35000)
+    }
+    workers.append(worker)
+
+# Step 2: Generate payment slips
+payment_slips = []
+for worker in workers:
+    try:
+        employee_level = "Unassigned"
+        salary = worker['salary']
+        gender = worker['gender']
+
+        if 10000 < salary < 20000:
+            employee_level = "A1"
+        elif 7500 < salary < 30000 and gender == "Female":
+            employee_level = "A5-F"
+
+        payment_slips.append({
+            'ID': worker['id'],
+            'Name': worker['name'],
+            'Gender': gender,
+            'Salary': salary,
+            'EmployeeLevel': employee_level
+        })
+
+    except Exception as e:
+        print(f"Error processing worker {worker['id']}: {e}")
+
+# Step 3: Save JSON data
+json_path = os.path.join(submission_dir, "payment_slips.json")
+with open(json_path, "w") as f:
+    json.dump(payment_slips, f, indent=4)
+
+# Step 4: Create Python script
+python_script = """import random
+import json
+
+genders = ['Male', 'Female']
+workers = []
+for i in range(400):
+    worker = {
+        'id': f'W{i+1:03d}',
+        'name': f'Worker_{i+1}',
+        'gender': random.choice(genders),
+        'salary': random.randint(5000, 35000)
+    }
+    workers.append(worker)
+
+payment_slips = []
+for worker in workers:
+    try:
+        employee_level = "Unassigned"
+        salary = worker['salary']
+        gender = worker['gender']
+
+        if 10000 < salary < 20000:
+            employee_level = "A1"
+        elif 7500 < salary < 30000 and gender == "Female":
+            employee_level = "A5-F"
+
+        payment_slips.append({
+            'ID': worker['id'],
+            'Name': worker['name'],
+            'Gender': gender,
+            'Salary': salary,
+            'EmployeeLevel': employee_level
+        })
+
+    except Exception as e:
+        print(f"Error processing worker {worker['id']}: {e}")
+
+with open("payment_slips.json", "w") as f:
+    json.dump(payment_slips, f, indent=4)
+"""
+
+with open(os.path.join(submission_dir, "main.py"), "w") as f:
+    f.write(python_script)
+
+# Step 5: Create R script
+r_script = """library(jsonlite)
+data <- fromJSON("payment_slips.json")
+print(head(data, 5))
+"""
+
+with open(os.path.join(submission_dir, "convert_python_data.R"), "w") as f:
+    f.write(r_script)
+
+# Step 6: Create README
+readme_text = """# Highridge Construction Company - Worker Payment Slip Generator
+
+## Overview
+This program generates weekly payment slips for 400 dynamically created workers using Python. It then demonstrates data access in R for integration and analysis.
+
+## Files Included
+- `main.py`: Core Python script generating the payment slips.
+- `convert_python_data.R`: Sample R script to read and display Python output.
+- `payment_slips.json`: JSON file (to be generated) for use in R.
+- `README.md`: This file.
+
+## How It Works
+1. Python dynamically creates a list of 400 workers with random gender and salary.
+2. Based on salary and gender:
+   - Salary > $10,000 and < $20,000: Employee Level = A1
+   - Salary > $7,500 and < $30,000 AND gender = Female: Employee Level = A5-F
+3. Data is exported to a JSON or CSV file.
+4. R script reads the file and displays a sample.
+
+## How to Run
+### Python
+```bash
+python main.py
